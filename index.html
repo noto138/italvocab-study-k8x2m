@@ -1,0 +1,918 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Italian Vocab Practice</title>
+    <link rel="manifest" href="data:application/json;base64,eyJuYW1lIjoiSXRhbGlhbiBWb2NhYiBQcmFjdGljZSIsInNob3J0X25hbWUiOiJJdGFsaWFuVm9jYWIiLCJzdGFydF91cmwiOiIuIiwiZGlzcGxheSI6InN0YW5kYWxvbmUiLCJiYWNrZ3JvdW5kX2NvbG9yIjoiIzJlN2QzMiIsInRoZW1lX2NvbG9yIjoiIzJlN2QzMiIsImljb25zIjpbeyJzcmMiOiJkYXRhOmltYWdlL3N2Zyt4bWw7YmFzZTY0LFBITjJaeUI0Yld4dWN6MGlhSFIwY0RvdkwzZDNkeTUzTXk1dmNtY3ZNakF3TUM5emRtY2lJSGRwWkhSb1BTSXhNakFpSUdobGFXZG9kRDBpTVRJd0lqNDhZMmx5WTJ4bElHTjRQU0kyTUNJZ1kzazlJall3SWlCeVBTSTBNQ0lnWm1sc2JEMGlJekpsTnpRek1pSXZQangwWlhoMElIZ3lQU0kyTUNJZ2VUSTlJelFpSUhOMGVXeGxQU0ptYVd4c09pTjNhR2wwWlR0bWIyNTBMWE5wZW1VNk1UTndlQ0lnZEdWNGRDMWhibU5vYjNJOUltMXBaR1JzWlNJK1NVUkJQQzkwWlhoMFBqd3ZjM1puUGc9PSIsInNpemVzIjoiMTIweDEyMCIsInR5cGUiOiJpbWFnZS9zdmcreG1sIn1dfQ==">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            color: #333;
+        }
+
+        .container {
+            max-width: 500px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        .header {
+            text-align: center;
+            color: white;
+            margin-bottom: 30px;
+        }
+
+        .header h1 {
+            font-size: 2.5em;
+            margin-bottom: 10px;
+        }
+
+        .header p {
+            opacity: 0.9;
+            font-size: 1.1em;
+        }
+
+        .card {
+            background: white;
+            border-radius: 15px;
+            padding: 25px;
+            margin-bottom: 20px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+        }
+
+        .practice-section {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .word-display {
+            background: #f8f9fa;
+            border-radius: 10px;
+            padding: 20px;
+            margin: 20px 0;
+            min-height: 150px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            border: 2px dashed #dee2e6;
+        }
+
+        .selected-words {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            justify-content: center;
+            margin-bottom: 15px;
+        }
+
+        .word-tag {
+            background: linear-gradient(45deg, #667eea, #764ba2);
+            color: white;
+            padding: 8px 15px;
+            border-radius: 20px;
+            font-weight: 500;
+            font-size: 1.1em;
+        }
+
+        .category-label {
+            font-size: 0.8em;
+            opacity: 0.8;
+            margin-left: 5px;
+        }
+
+        .empty-state {
+            color: #6c757d;
+            font-style: italic;
+        }
+
+        .controls {
+            display: flex;
+            gap: 10px;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        .btn {
+            background: linear-gradient(45deg, #667eea, #764ba2);
+            color: white;
+            border: none;
+            padding: 12px 20px;
+            border-radius: 25px;
+            font-size: 1em;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-weight: 500;
+        }
+
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.4);
+        }
+
+        .btn-secondary {
+            background: #6c757d;
+        }
+
+        .btn-secondary:hover {
+            box-shadow: 0 5px 15px rgba(108, 117, 125, 0.4);
+        }
+
+        .settings-section {
+            margin-top: 20px;
+        }
+
+        .category-group {
+            margin-bottom: 20px;
+        }
+
+        .category-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 10px;
+            padding: 10px 0;
+            border-bottom: 2px solid #e9ecef;
+        }
+
+        .category-title {
+            font-weight: 600;
+            color: #495057;
+            font-size: 1.1em;
+        }
+
+        .word-count {
+            background: #e9ecef;
+            padding: 4px 10px;
+            border-radius: 12px;
+            font-size: 0.9em;
+            color: #6c757d;
+        }
+
+        .word-list {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin-bottom: 10px;
+        }
+
+        .word-item {
+            background: #f8f9fa;
+            padding: 6px 12px;
+            border-radius: 15px;
+            font-size: 0.9em;
+            border: 1px solid #dee2e6;
+            position: relative;
+        }
+
+        .word-item:hover {
+            background: #e9ecef;
+        }
+
+        .remove-word {
+            color: #dc3545;
+            margin-left: 8px;
+            cursor: pointer;
+            font-weight: bold;
+        }
+
+        .add-word-form {
+            display: flex;
+            gap: 8px;
+            margin-top: 10px;
+        }
+
+        .add-word-input {
+            flex: 1;
+            padding: 8px 12px;
+            border: 1px solid #dee2e6;
+            border-radius: 20px;
+            font-size: 0.9em;
+        }
+
+        .add-word-btn {
+            background: #28a745;
+            color: white;
+            border: none;
+            padding: 8px 15px;
+            border-radius: 20px;
+            cursor: pointer;
+            font-size: 0.9em;
+        }
+
+        .tabs {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 20px;
+            border-bottom: 2px solid #e9ecef;
+        }
+
+        .tab {
+            background: none;
+            border: none;
+            padding: 10px 20px;
+            cursor: pointer;
+            border-bottom: 3px solid transparent;
+            font-size: 1em;
+            color: #6c757d;
+            transition: all 0.3s ease;
+        }
+
+        .tab.active {
+            color: #667eea;
+            border-bottom-color: #667eea;
+            font-weight: 600;
+        }
+
+        .tab-content {
+            display: none;
+        }
+
+        .tab-content.active {
+            display: block;
+        }
+
+        .word-selection {
+            margin-bottom: 20px;
+        }
+
+        .word-selection label {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 8px;
+            font-weight: 500;
+        }
+
+        .word-selection input[type="number"] {
+            width: 60px;
+            padding: 5px;
+            border: 1px solid #dee2e6;
+            border-radius: 5px;
+        }
+
+        .level-selector {
+            margin-bottom: 20px;
+            text-align: center;
+        }
+
+        .level-selector label {
+            font-weight: 600;
+            margin-right: 10px;
+            color: #495057;
+        }
+
+        .level-selector select {
+            padding: 8px 15px;
+            border: 2px solid #dee2e6;
+            border-radius: 20px;
+            font-size: 1em;
+            background: white;
+            cursor: pointer;
+        }
+
+        .import-section {
+            background: #f8f9fa;
+            border-radius: 10px;
+            padding: 20px;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+
+        .import-section h3 {
+            margin-bottom: 10px;
+            color: #495057;
+        }
+
+        .import-section p {
+            color: #6c757d;
+            margin-bottom: 15px;
+        }
+
+        .import-controls {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            align-items: center;
+        }
+
+        .import-controls .btn {
+            margin: 5px;
+        }
+
+        .import-status {
+            margin-top: 15px;
+            padding: 10px;
+            border-radius: 5px;
+            display: none;
+        }
+
+        .import-status.success {
+            background: #d4edda;
+            border: 1px solid #c3e6cb;
+            color: #155724;
+            display: block;
+        }
+
+        .import-status.error {
+            background: #f8d7da;
+            border: 1px solid #f5c6cb;
+            color: #721c24;
+            display: block;
+        }
+            margin-top: 20px;
+            text-align: center;
+        }
+
+        .gender-hints {
+            background: #fff3cd;
+            border: 2px solid #ffeaa7;
+            border-radius: 10px;
+            padding: 15px;
+            margin-bottom: 15px;
+            min-height: 80px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+
+        .gender-hint-item {
+            background: #fff;
+            padding: 8px 15px;
+            margin: 5px;
+            border-radius: 15px;
+            border: 2px solid #ffeaa7;
+            display: inline-block;
+            font-weight: 500;
+        }
+
+        .feminine {
+            background: #ffeaea;
+            border: 2px solid #e74c3c;
+            color: #c0392b;
+        }
+
+        .masculine {
+            background: #eaf4ff;
+            border: 2px solid #3498db;
+            color: #2980b9;
+        }
+            .container {
+                padding: 15px;
+            }
+            
+            .header h1 {
+                font-size: 2em;
+            }
+            
+            .controls {
+                flex-direction: column;
+            }
+            
+            .btn {
+                width: 100%;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🇮🇹 Italian Vocab</h1>
+            <p>Practice with random words</p>
+        </div>
+
+        <div class="card">
+            <div class="tabs">
+                <button class="tab active" data-tab="practice">Practice</button>
+                <button class="tab" data-tab="manage">Manage Words</button>
+            </div>
+
+            <div class="tab-content active" id="practice">
+                <div class="practice-section">
+                    <div class="level-selector">
+                        <label for="skillLevel">Difficulty Level:</label>
+                        <select id="skillLevel" onchange="switchLevel()">
+                            <option value="beginner">Principiante (Beginner)</option>
+                            <option value="intermediate">Intermedio (Intermediate)</option>
+                            <option value="advanced">Avanzato (Advanced)</option>
+                        </select>
+                    </div>
+
+                    <div class="word-selection">
+                        <label>
+                            <input type="checkbox" id="includeNouns" checked> 
+                            Sostantivi (<span id="nounCount">0</span>) - 
+                            <input type="number" id="nounNumber" value="1" min="0" max="5"> words
+                        </label>
+                        <label>
+                            <input type="checkbox" id="includeVerbs" checked> 
+                            Verbi (<span id="verbCount">0</span>) - 
+                            <input type="number" id="verbNumber" value="1" min="0" max="5"> words
+                        </label>
+                        <label>
+                            <input type="checkbox" id="includeAdjectives" checked> 
+                            Aggettivi (<span id="adjectiveCount">0</span>) - 
+                            <input type="number" id="adjectiveNumber" value="1" min="0" max="5"> words
+                        </label>
+                        <label>
+                            <input type="checkbox" id="includeAdverbs"> 
+                            Avverbi (<span id="adverbCount">0</span>) - 
+                            <input type="number" id="adverbNumber" value="1" min="0" max="5"> words
+                        </label>
+                    </div>
+
+                    <div class="word-display">
+                        <div class="selected-words" id="selectedWords">
+                            <div class="empty-state">Click "Get New Words" to start practicing!</div>
+                        </div>
+                    </div>
+
+                    <div class="controls">
+                        <button class="btn" onclick="getRandomWords()">Get New Words</button>
+                        <button class="btn btn-secondary" onclick="clearWords()">Clear</button>
+                    </div>
+
+                    <div class="gender-hint-section">
+                        <div class="gender-hints" id="genderHints">
+                            <div class="empty-state">Gender hints will appear here when you click the button below</div>
+                        </div>
+                        <button class="btn btn-secondary" id="genderHintBtn" onclick="showGenderHints()" style="display: none;">Show Gender Hints</button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="tab-content" id="manage">
+                <div class="import-section">
+                    <div class="import-controls">
+                        <h3>Import Word Lists</h3>
+                        <p>Load JSON files with vocabulary organized by skill level</p>
+                        <input type="file" id="jsonFileInput" accept=".json" style="display: none;" onchange="loadJSONFile(event)">
+                        <button class="btn" onclick="document.getElementById('jsonFileInput').click()">Load JSON File</button>
+                        <button class="btn btn-secondary" onclick="downloadSampleJSON()">Download Sample JSON</button>
+                    </div>
+                    <div class="import-status" id="importStatus"></div>
+                </div>
+
+                <div class="settings-section">
+                    <div class="category-group">
+                        <div class="category-header">
+                            <span class="category-title">Sostantivi (Nouns)</span>
+                            <span class="word-count" id="nounCountManage">0 words</span>
+                        </div>
+                        <div class="word-list" id="nounList"></div>
+                        <div class="add-word-form">
+                            <input type="text" class="add-word-input" id="newNoun" placeholder="Add new noun...">
+                            <button class="add-word-btn" onclick="addWord('nouns', 'newNoun')">Add</button>
+                        </div>
+                    </div>
+
+                    <div class="category-group">
+                        <div class="category-header">
+                            <span class="category-title">Verbi (Verbs)</span>
+                            <span class="word-count" id="verbCountManage">0 words</span>
+                        </div>
+                        <div class="word-list" id="verbList"></div>
+                        <div class="add-word-form">
+                            <input type="text" class="add-word-input" id="newVerb" placeholder="Add new verb...">
+                            <button class="add-word-btn" onclick="addWord('verbs', 'newVerb')">Add</button>
+                        </div>
+                    </div>
+
+                    <div class="category-group">
+                        <div class="category-header">
+                            <span class="category-title">Aggettivi (Adjectives)</span>
+                            <span class="word-count" id="adjectiveCountManage">0 words</span>
+                        </div>
+                        <div class="word-list" id="adjectiveList"></div>
+                        <div class="add-word-form">
+                            <input type="text" class="add-word-input" id="newAdjective" placeholder="Add new adjective...">
+                            <button class="add-word-btn" onclick="addWord('adjectives', 'newAdjective')">Add</button>
+                        </div>
+                    </div>
+
+                    <div class="category-group">
+                        <div class="category-header">
+                            <span class="category-title">Avverbi (Adverbs)</span>
+                            <span class="word-count" id="adverbCountManage">0 words</span>
+                        </div>
+                        <div class="word-list" id="adverbList"></div>
+                        <div class="add-word-form">
+                            <input type="text" class="add-word-input" id="newAdverb" placeholder="Add new adverb...">
+                            <button class="add-word-btn" onclick="addWord('adverbs', 'newAdverb')">Add</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Initialize word lists with some starter Italian words (organized by skill level)
+        const defaultWordLists = {
+            beginner: {
+                nouns: [
+                    {word: 'casa', gender: 'f'}, {word: 'amico', gender: 'm'}, {word: 'tempo', gender: 'm'}, 
+                    {word: 'giorno', gender: 'm'}, {word: 'mano', gender: 'f'}, {word: 'occhio', gender: 'm'}, 
+                    {word: 'cuore', gender: 'm'}, {word: 'mondo', gender: 'm'}, {word: 'famiglia', gender: 'f'}, 
+                    {word: 'lavoro', gender: 'm'}
+                ],
+                verbs: ['essere', 'avere', 'fare', 'dire', 'andare', 'potere', 'dovere', 'volere', 'sapere', 'dare'],
+                adjectives: ['grande', 'nuovo', 'primo', 'ultimo', 'buono', 'italiano', 'stesso', 'bello', 'tutto', 'altro'],
+                adverbs: ['molto', 'più', 'bene', 'anche', 'ancora', 'solo', 'già', 'sempre', 'forse', 'insieme']
+            },
+            intermediate: {
+                nouns: [
+                    {word: 'strada', gender: 'f'}, {word: 'governo', gender: 'm'}, {word: 'momento', gender: 'm'},
+                    {word: 'ragazza', gender: 'f'}, {word: 'problema', gender: 'm'}, {word: 'storia', gender: 'f'}
+                ],
+                verbs: ['portare', 'sentire', 'parlare', 'diventare', 'lasciare', 'mettere', 'seguire', 'trovare'],
+                adjectives: ['sociale', 'generale', 'nazionale', 'pubblico', 'economico', 'politico', 'particolare'],
+                adverbs: ['proprio', 'oggi', 'ieri', 'domani', 'presto', 'tardi', 'insieme', 'spesso']
+            },
+            advanced: {
+                nouns: [
+                    {word: 'conseguenza', gender: 'f'}, {word: 'argomento', gender: 'm'}, {word: 'caratteristica', gender: 'f'},
+                    {word: 'fenomeno', gender: 'm'}, {word: 'organizzazione', gender: 'f'}, {word: 'responsabilità', gender: 'f'}
+                ],
+                verbs: ['realizzare', 'rappresentare', 'determinare', 'costituire', 'sviluppare', 'raggiungere'],
+                adjectives: ['fondamentale', 'internazionale', 'tecnologico', 'scientifico', 'culturale', 'ambientale'],
+                adverbs: ['particolarmente', 'principalmente', 'completamente', 'attualmente', 'relativamente']
+            }
+        };
+
+        // Current skill level and word lists
+        let currentLevel = 'beginner';
+        let allWordLists = {...defaultWordLists};
+        let wordLists = allWordLists[currentLevel]; // Current active word list
+        let currentSelectedWords = []; // Store current practice words for gender hints
+
+        // Save words function (placeholder for when localStorage is available)
+        function saveWords() {
+            // In a real environment, this would save to localStorage:
+            // localStorage.setItem('italianVocabLists', JSON.stringify(allWordLists));
+            console.log('Words saved (localStorage not available in demo)');
+        }
+
+        // Switch difficulty level
+        function switchLevel() {
+            const levelSelect = document.getElementById('skillLevel');
+            currentLevel = levelSelect.value;
+            wordLists = allWordLists[currentLevel];
+            
+            updateWordCounts();
+            updateWordLists();
+            clearWords();
+            
+            console.log(`Switched to ${currentLevel} level`);
+        }
+
+        // Load JSON file with word lists
+        function loadJSONFile(event) {
+            const file = event.target.files[0];
+            if (!file) return;
+            
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                try {
+                    const jsonData = JSON.parse(e.target.result);
+                    
+                    // Validate JSON structure
+                    if (validateJSONStructure(jsonData)) {
+                        allWordLists = {...allWordLists, ...jsonData};
+                        wordLists = allWordLists[currentLevel];
+                        updateWordCounts();
+                        updateWordLists();
+                        showImportStatus('JSON file loaded successfully!', 'success');
+                        saveWords();
+                    } else {
+                        showImportStatus('Invalid JSON structure. Please check the format.', 'error');
+                    }
+                } catch (error) {
+                    showImportStatus('Error parsing JSON file: ' + error.message, 'error');
+                }
+            };
+            reader.readAsText(file);
+        }
+
+        // Validate JSON structure
+        function validateJSONStructure(data) {
+            const requiredLevels = ['beginner', 'intermediate', 'advanced'];
+            const requiredCategories = ['nouns', 'verbs', 'adjectives', 'adverbs'];
+            
+            // Check if at least one level exists
+            const hasValidLevel = requiredLevels.some(level => data[level]);
+            if (!hasValidLevel) return false;
+            
+            // Check structure of existing levels
+            for (const level in data) {
+                if (typeof data[level] !== 'object') return false;
+                
+                for (const category of requiredCategories) {
+                    if (data[level][category] && !Array.isArray(data[level][category])) {
+                        return false;
+                    }
+                }
+            }
+            
+            return true;
+        }
+
+        // Show import status message
+        function showImportStatus(message, type) {
+            const statusDiv = document.getElementById('importStatus');
+            statusDiv.textContent = message;
+            statusDiv.className = `import-status ${type}`;
+            
+            setTimeout(() => {
+                statusDiv.style.display = 'none';
+            }, 5000);
+        }
+
+        // Download sample JSON file
+        function downloadSampleJSON() {
+            const sampleData = {
+                "beginner": {
+                    "nouns": [
+                        {"word": "gatto", "gender": "m"},
+                        {"word": "pizza", "gender": "f"},
+                        {"word": "libro", "gender": "m"},
+                        {"word": "casa", "gender": "f"},
+                        {"word": "amico", "gender": "m"}
+                    ],
+                    "verbs": ["mangiare", "bere", "dormire", "parlare", "camminare"],
+                    "adjectives": ["bello", "brutto", "piccolo", "grande", "nuovo"],
+                    "adverbs": ["velocemente", "lentamente", "bene", "male", "molto"]
+                },
+                "intermediate": {
+                    "nouns": [
+                        {"word": "università", "gender": "f"},
+                        {"word": "ristorante", "gender": "m"},
+                        {"word": "ospedale", "gender": "m"},
+                        {"word": "stazione", "gender": "f"}
+                    ],
+                    "verbs": ["studiare", "lavorare", "viaggiare", "cucinare"],
+                    "adjectives": ["interessante", "difficile", "importante", "necessario"],
+                    "adverbs": ["facilmente", "raramente", "spesso", "sempre"]
+                },
+                "advanced": {
+                    "nouns": [
+                        {"word": "responsabilità", "gender": "f"},
+                        {"word": "governo", "gender": "m"},
+                        {"word": "democrazia", "gender": "f"}
+                    ],
+                    "verbs": ["realizzare", "organizzare", "sviluppare"],
+                    "adjectives": ["fondamentale", "tecnologico", "scientifico"],
+                    "adverbs": ["particolarmente", "principalmente", "completamente"]
+                }
+            };
+            
+            const dataStr = JSON.stringify(sampleData, null, 2);
+            
+            try {
+                // Method 1: Try the blob download
+                const dataBlob = new Blob([dataStr], {type: 'application/json'});
+                const url = URL.createObjectURL(dataBlob);
+                const link = document.createElement('a');
+                link.href = url;
+                link.download = 'italian_vocab_sample.json';
+                document.body.appendChild(link);
+                link.click();
+                document.body.removeChild(link);
+                URL.revokeObjectURL(url);
+                
+                showImportStatus('Sample JSON downloaded!', 'success');
+            } catch (error) {
+                // Method 2: Fallback - show JSON in a popup to copy
+                const popup = window.open('', '_blank');
+                popup.document.write(`
+                    <html>
+                        <head><title>Sample Italian Vocabulary JSON</title></head>
+                        <body>
+                            <h2>Sample Italian Vocabulary JSON</h2>
+                            <p>Copy this content and save it as a .json file:</p>
+                            <textarea style="width:100%; height:400px; font-family:monospace;">${dataStr}</textarea>
+                            <p><strong>Instructions:</strong></p>
+                            <ol>
+                                <li>Select all text in the box above (Ctrl+A)</li>
+                                <li>Copy it (Ctrl+C)</li>
+                                <li>Create a new file called "italian_vocab.json"</li>
+                                <li>Paste the content and save</li>
+                            </ol>
+                        </body>
+                    </html>
+                `);
+                showImportStatus('Sample JSON opened in new window - copy and save as .json file', 'success');
+            }
+        }
+
+        // Tab switching
+        document.querySelectorAll('.tab').forEach(tab => {
+            tab.addEventListener('click', () => {
+                document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+                document.querySelectorAll('.tab-content').forEach(content => content.classList.remove('active'));
+                
+                tab.classList.add('active');
+                document.getElementById(tab.dataset.tab).classList.add('active');
+                
+                if (tab.dataset.tab === 'manage') {
+                    updateWordLists();
+                }
+            });
+        });
+
+        // Get random words based on user selection
+        function getRandomWords() {
+            console.log('Getting random words...');
+            const selectedWords = [];
+            
+            // Check each category individually
+            const categories = [
+                { name: 'nouns', checkboxId: 'includeNouns', numberId: 'nounNumber', singularName: 'noun' },
+                { name: 'verbs', checkboxId: 'includeVerbs', numberId: 'verbNumber', singularName: 'verb' },
+                { name: 'adjectives', checkboxId: 'includeAdjectives', numberId: 'adjectiveNumber', singularName: 'adjective' },
+                { name: 'adverbs', checkboxId: 'includeAdverbs', numberId: 'adverbNumber', singularName: 'adverb' }
+            ];
+            
+            categories.forEach(cat => {
+                const checkbox = document.getElementById(cat.checkboxId);
+                const numberInput = document.getElementById(cat.numberId);
+                
+                console.log(`${cat.name}: checkbox=${checkbox?.checked}, words available=${wordLists[cat.name]?.length || 0}`);
+                
+                if (checkbox && checkbox.checked && wordLists[cat.name] && wordLists[cat.name].length > 0) {
+                    const count = Math.min(parseInt(numberInput.value) || 1, wordLists[cat.name].length);
+                    const shuffled = [...wordLists[cat.name]].sort(() => 0.5 - Math.random());
+                    
+                    for (let i = 0; i < count; i++) {
+                        const item = shuffled[i];
+                        selectedWords.push({
+                            word: typeof item === 'object' ? item.word : item,
+                            category: cat.singularName,
+                            gender: typeof item === 'object' ? item.gender : null
+                        });
+                    }
+                }
+            });
+
+            console.log('Selected words:', selectedWords);
+            currentSelectedWords = selectedWords; // Store for gender hints
+            displaySelectedWords(selectedWords);
+            
+            // Show/hide gender hint button based on whether there are nouns
+            const hasNouns = selectedWords.some(item => item.category === 'noun' && item.gender);
+            const genderHintBtn = document.getElementById('genderHintBtn');
+            if (hasNouns) {
+                genderHintBtn.style.display = 'inline-block';
+            } else {
+                genderHintBtn.style.display = 'none';
+            }
+            
+            // Clear previous gender hints
+            hideGenderHints();
+        }
+
+        // Display selected words
+        function displaySelectedWords(words) {
+            const container = document.getElementById('selectedWords');
+            
+            if (words.length === 0) {
+                container.innerHTML = '<div class="empty-state">No words selected. Check your settings and try again.</div>';
+                return;
+            }
+
+            container.innerHTML = words.map(item => 
+                `<div class="word-tag">${item.word}<span class="category-label">(${item.category})</span></div>`
+            ).join('');
+        }
+
+        // Clear selected words
+        function clearWords() {
+            document.getElementById('selectedWords').innerHTML = 
+                '<div class="empty-state">Click "Get New Words" to start practicing!</div>';
+            currentSelectedWords = [];
+            document.getElementById('genderHintBtn').style.display = 'none';
+            hideGenderHints();
+        }
+
+        // Show gender hints for nouns
+        function showGenderHints() {
+            const genderHints = document.getElementById('genderHints');
+            const nounsWithGender = currentSelectedWords.filter(item => item.category === 'noun' && item.gender);
+            
+            if (nounsWithGender.length === 0) {
+                genderHints.innerHTML = '<div class="empty-state">No nouns with gender info available</div>';
+                return;
+            }
+            
+            const hintsHtml = nounsWithGender.map(item => {
+                const genderText = item.gender === 'f' ? 'feminine' : 'masculine';
+                const genderClass = item.gender === 'f' ? 'feminine' : 'masculine';
+                return `<div class="gender-hint-item ${genderClass}">${item.word} - ${genderText}</div>`;
+            }).join('');
+            
+            genderHints.innerHTML = hintsHtml;
+        }
+
+        // Hide gender hints
+        function hideGenderHints() {
+            document.getElementById('genderHints').innerHTML = 
+                '<div class="empty-state">Gender hints will appear here when you click the button below</div>';
+        }
+
+        // Add new word to a category
+        function addWord(category, inputId) {
+            const input = document.getElementById(inputId);
+            const word = input.value.trim().toLowerCase();
+            
+            if (word) {
+                // For nouns, we could add gender info later, for now just add as string
+                if (category === 'nouns') {
+                    if (!wordLists[category].some(item => 
+                        (typeof item === 'object' ? item.word : item) === word)) {
+                        wordLists[category].push({word: word, gender: null}); // Gender can be added later
+                        saveWords();
+                        updateWordLists();
+                        updateWordCounts();
+                        input.value = '';
+                    }
+                } else {
+                    if (!wordLists[category].includes(word)) {
+                        wordLists[category].push(word);
+                        saveWords();
+                        updateWordLists();
+                        updateWordCounts();
+                        input.value = '';
+                    }
+                }
+            }
+        }
+
+        // Remove word from category
+        function removeWord(category, word) {
+            if (category === 'nouns') {
+                wordLists[category] = wordLists[category].filter(item => 
+                    (typeof item === 'object' ? item.word : item) !== word);
+            } else {
+                wordLists[category] = wordLists[category].filter(w => w !== word);
+            }
+            saveWords();
+            updateWordLists();
+            updateWordCounts();
+        }
+
+        // Update word lists display
+        function updateWordLists() {
+            Object.keys(wordLists).forEach(category => {
+                const listElement = document.getElementById(`${category.slice(0, -1)}List`);
+                const countElement = document.getElementById(`${category.slice(0, -1)}CountManage`);
+                
+                listElement.innerHTML = wordLists[category].map(item => {
+                    const word = typeof item === 'object' ? item.word : item;
+                    return `<div class="word-item">${word}<span class="remove-word" onclick="removeWord('${category}', '${word}')">×</span></div>`;
+                }).join('');
+                
+                countElement.textContent = `${wordLists[category].length} words`;
+            });
+        }
+
+        // Update word counts in practice tab
+        function updateWordCounts() {
+            document.getElementById('nounCount').textContent = wordLists.nouns.length;
+            document.getElementById('verbCount').textContent = wordLists.verbs.length;
+            document.getElementById('adjectiveCount').textContent = wordLists.adjectives.length;
+            document.getElementById('adverbCount').textContent = wordLists.adverbs.length;
+        }
+
+        // Handle Enter key in input fields
+        document.addEventListener('keypress', (e) => {
+            if (e.key === 'Enter') {
+                const target = e.target;
+                if (target.id === 'newNoun') addWord('nouns', 'newNoun');
+                else if (target.id === 'newVerb') addWord('verbs', 'newVerb');
+                else if (target.id === 'newAdjective') addWord('adjectives', 'newAdjective');
+                else if (target.id === 'newAdverb') addWord('adverbs', 'newAdverb');
+            }
+        });
+
+        // Initialize the app
+        updateWordCounts();
+        updateWordLists();
+
+        // Register service worker for PWA functionality
+        if ('serviceWorker' in navigator) {
+            navigator.serviceWorker.register('data:text/javascript;base64,c2VsZi5hZGRFdmVudExpc3RlbmVyKCdpbnN0YWxsJywgZXZlbnQgPT4gewogIGV2ZW50LndhaXRVbnRpbChzZWxmLnNraXBXYWl0aW5nKCkpOwp9KTsKCnNlbGYuYWRkRXZlbnRMaXN0ZW5lcignYWN0aXZhdGUnLCBldmVudCA9PiB7CiAgZXZlbnQud2FpdFVudGlsKHNlbGYuY2xpZW50cy5jbGFpbSgpKTsKfSk7CgpzZWxmLmFkZEV2ZW50TGlzdGVuZXIoJ2ZldGNoJywgZXZlbnQgPT4gewogIGV2ZW50LnJlc3BvbmRXaXRoKGZldGNoKGV2ZW50LnJlcXVlc3QpKTsKfSk7')
+                .then(() => console.log('Service Worker registered'))
+                .catch(err => console.log('Service Worker registration failed'));
+        }
+    </script>
+</body>
+</html>
