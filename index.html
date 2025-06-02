@@ -527,32 +527,67 @@
         const defaultWordLists = {
             beginner: {
                 nouns: [
-                    {word: 'casa', gender: 'f'}, {word: 'amico', gender: 'm'}, {word: 'tempo', gender: 'm'}, 
-                    {word: 'giorno', gender: 'm'}, {word: 'mano', gender: 'f'}, {word: 'occhio', gender: 'm'}, 
-                    {word: 'cuore', gender: 'm'}, {word: 'mondo', gender: 'm'}, {word: 'famiglia', gender: 'f'}, 
-                    {word: 'lavoro', gender: 'm'}
+                    {word: 'casa', gender: 'f', translation: 'house'}, 
+                    {word: 'amico', gender: 'm', translation: 'friend'}, 
+                    {word: 'tempo', gender: 'm', translation: 'time'}, 
+                    {word: 'giorno', gender: 'm', translation: 'day'}, 
+                    {word: 'mano', gender: 'f', translation: 'hand'}, 
+                    {word: 'mondo', gender: 'm', translation: 'world'}
                 ],
-                verbs: ['essere', 'avere', 'fare', 'dire', 'andare', 'potere', 'dovere', 'volere', 'sapere', 'dare'],
-                adjectives: ['grande', 'nuovo', 'primo', 'ultimo', 'buono', 'italiano', 'stesso', 'bello', 'tutto', 'altro'],
-                adverbs: ['molto', 'più', 'bene', 'anche', 'ancora', 'solo', 'già', 'sempre', 'forse', 'insieme']
+                verbs: [
+                    {word: 'essere', translation: 'to be'}, 
+                    {word: 'avere', translation: 'to have'}, 
+                    {word: 'fare', translation: 'to do/make'}, 
+                    {word: 'dire', translation: 'to say'}, 
+                    {word: 'andare', translation: 'to go'}
+                ],
+                adjectives: [
+                    {word: 'grande', translation: 'big'}, 
+                    {word: 'nuovo', translation: 'new'}, 
+                    {word: 'buono', translation: 'good'}, 
+                    {word: 'bello', translation: 'beautiful'}
+                ],
+                adverbs: [
+                    {word: 'molto', translation: 'very/much'}, 
+                    {word: 'bene', translation: 'well'}, 
+                    {word: 'sempre', translation: 'always'}
+                ]
             },
             intermediate: {
                 nouns: [
-                    {word: 'strada', gender: 'f'}, {word: 'governo', gender: 'm'}, {word: 'momento', gender: 'm'},
-                    {word: 'ragazza', gender: 'f'}, {word: 'problema', gender: 'm'}, {word: 'storia', gender: 'f'}
+                    {word: 'strada', gender: 'f', translation: 'street'}, 
+                    {word: 'governo', gender: 'm', translation: 'government'}
                 ],
-                verbs: ['portare', 'sentire', 'parlare', 'diventare', 'lasciare', 'mettere', 'seguire', 'trovare'],
-                adjectives: ['sociale', 'generale', 'nazionale', 'pubblico', 'economico', 'politico', 'particolare'],
-                adverbs: ['proprio', 'oggi', 'ieri', 'domani', 'presto', 'tardi', 'insieme', 'spesso']
+                verbs: [
+                    {word: 'portare', translation: 'to bring'}, 
+                    {word: 'sentire', translation: 'to hear/feel'}
+                ],
+                adjectives: [
+                    {word: 'sociale', translation: 'social'}, 
+                    {word: 'generale', translation: 'general'}
+                ],
+                adverbs: [
+                    {word: 'proprio', translation: 'really'}, 
+                    {word: 'oggi', translation: 'today'}
+                ]
             },
             advanced: {
                 nouns: [
-                    {word: 'conseguenza', gender: 'f'}, {word: 'argomento', gender: 'm'}, {word: 'caratteristica', gender: 'f'},
-                    {word: 'fenomeno', gender: 'm'}, {word: 'organizzazione', gender: 'f'}, {word: 'responsabilità', gender: 'f'}
+                    {word: 'conseguenza', gender: 'f', translation: 'consequence'}, 
+                    {word: 'argomento', gender: 'm', translation: 'topic'}
                 ],
-                verbs: ['realizzare', 'rappresentare', 'determinare', 'costituire', 'sviluppare', 'raggiungere'],
-                adjectives: ['fondamentale', 'internazionale', 'tecnologico', 'scientifico', 'culturale', 'ambientale'],
-                adverbs: ['particolarmente', 'principalmente', 'completamente', 'attualmente', 'relativamente']
+                verbs: [
+                    {word: 'realizzare', translation: 'to realize'}, 
+                    {word: 'rappresentare', translation: 'to represent'}
+                ],
+                adjectives: [
+                    {word: 'fondamentale', translation: 'fundamental'}, 
+                    {word: 'internazionale', translation: 'international'}
+                ],
+                adverbs: [
+                    {word: 'particolarmente', translation: 'particularly'}, 
+                    {word: 'principalmente', translation: 'mainly'}
+                ]
             }
         };
 
@@ -864,6 +899,12 @@
             }).join('');
             
             translationHints.innerHTML = hintsHtml;
+        }
+
+        // Hide translation hints
+        function hideTranslationHints() {
+            document.getElementById('translationHints').innerHTML = 
+                '<div class="empty-state">English translations will appear here when you click the button below</div>';
         }
 
         // Basic translation fallback for words without built-in translations
