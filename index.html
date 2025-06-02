@@ -447,6 +447,13 @@
                         </div>
                         <button class="btn btn-secondary" id="genderHintBtn" onclick="showGenderHints()" style="display: none;">Show Gender Hints</button>
                     </div>
+
+                    <div class="translation-hint-section">
+                        <div class="translation-hints" id="translationHints">
+                            <div class="empty-state">English translations will appear here when you click the button below</div>
+                        </div>
+                        <button class="btn btn-secondary" id="translationHintBtn" onclick="showTranslationHints()" style="display: none;">Show English Translations</button>
+                    </div>
                 </div>
             </div>
 
@@ -757,7 +764,8 @@
                         selectedWords.push({
                             word: typeof item === 'object' ? item.word : item,
                             category: cat.singularName,
-                            gender: typeof item === 'object' ? item.gender : null
+                            gender: typeof item === 'object' ? item.gender : null,
+                            translation: typeof item === 'object' ? item.translation : null
                         });
                     }
                 }
@@ -767,17 +775,28 @@
             currentSelectedWords = selectedWords; // Store for gender hints
             displaySelectedWords(selectedWords);
             
-            // Show/hide gender hint button based on whether there are nouns
+            // Show/hide hint buttons based on available words
             const hasNouns = selectedWords.some(item => item.category === 'noun' && item.gender);
+            const hasAnyWords = selectedWords.length > 0;
+            
             const genderHintBtn = document.getElementById('genderHintBtn');
+            const translationHintBtn = document.getElementById('translationHintBtn');
+            
             if (hasNouns) {
                 genderHintBtn.style.display = 'inline-block';
             } else {
                 genderHintBtn.style.display = 'none';
             }
             
-            // Clear previous gender hints
+            if (hasAnyWords) {
+                translationHintBtn.style.display = 'inline-block';
+            } else {
+                translationHintBtn.style.display = 'none';
+            }
+            
+            // Clear previous hints
             hideGenderHints();
+            hideTranslationHints();
         }
 
         // Display selected words
@@ -800,7 +819,9 @@
                 '<div class="empty-state">Click "Get New Words" to start practicing!</div>';
             currentSelectedWords = [];
             document.getElementById('genderHintBtn').style.display = 'none';
+            document.getElementById('translationHintBtn').style.display = 'none';
             hideGenderHints();
+            hideTranslationHints();
         }
 
         // Show gender hints for nouns
@@ -826,6 +847,33 @@
         function hideGenderHints() {
             document.getElementById('genderHints').innerHTML = 
                 '<div class="empty-state">Gender hints will appear here when you click the button below</div>';
+        }
+
+        // Show translation hints for all words
+        function showTranslationHints() {
+            const translationHints = document.getElementById('translationHints');
+            
+            if (currentSelectedWords.length === 0) {
+                translationHints.innerHTML = '<div class="empty-state">No words available for translation</div>';
+                return;
+            }
+            
+            const hintsHtml = currentSelectedWords.map(item => {
+                const translation = item.translation || getBasicTranslation(item.word);
+                return `<div class="translation-hint-item">${item.word} - ${translation}</div>`;
+            }).join('');
+            
+            translationHints.innerHTML = hintsHtml;
+        }
+
+        // Basic translation fallback for words without built-in translations
+        function getBasicTranslation(word) {
+            const basicDict = {
+                'essere': 'to be', 'avere': 'to have', 'fare': 'to do/make', 'dire': 'to say',
+                'andare': 'to go', 'molto': 'very/much', 'bene': 'well', 'sempre': 'always'
+            };
+            
+            return basicDict[word.toLowerCase()] || '(translation not available)';
         }
 
         // Add new word to a category
