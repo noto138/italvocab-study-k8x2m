@@ -679,82 +679,90 @@
             }, 5000);
         }
 
-        // Download sample JSON file
-        function downloadSampleJSON() {
-            const sampleData = {
-                "beginner": {
-                    "nouns": [
-                        {"word": "gatto", "gender": "m"},
-                        {"word": "pizza", "gender": "f"},
-                        {"word": "libro", "gender": "m"},
-                        {"word": "casa", "gender": "f"},
-                        {"word": "amico", "gender": "m"}
-                    ],
-                    "verbs": ["mangiare", "bere", "dormire", "parlare", "camminare"],
-                    "adjectives": ["bello", "brutto", "piccolo", "grande", "nuovo"],
-                    "adverbs": ["velocemente", "lentamente", "bene", "male", "molto"]
-                },
-                "intermediate": {
-                    "nouns": [
-                        {"word": "università", "gender": "f"},
-                        {"word": "ristorante", "gender": "m"},
-                        {"word": "ospedale", "gender": "m"},
-                        {"word": "stazione", "gender": "f"}
-                    ],
-                    "verbs": ["studiare", "lavorare", "viaggiare", "cucinare"],
-                    "adjectives": ["interessante", "difficile", "importante", "necessario"],
-                    "adverbs": ["facilmente", "raramente", "spesso", "sempre"]
-                },
-                "advanced": {
-                    "nouns": [
-                        {"word": "responsabilità", "gender": "f"},
-                        {"word": "governo", "gender": "m"},
-                        {"word": "democrazia", "gender": "f"}
-                    ],
-                    "verbs": ["realizzare", "organizzare", "sviluppare"],
-                    "adjectives": ["fondamentale", "tecnologico", "scientifico"],
-                    "adverbs": ["particolarmente", "principalmente", "completamente"]
-                }
-            };
-            
-            const dataStr = JSON.stringify(sampleData, null, 2);
-            
-            try {
-                // Method 1: Try the blob download
-                const dataBlob = new Blob([dataStr], {type: 'application/json'});
-                const url = URL.createObjectURL(dataBlob);
-                const link = document.createElement('a');
-                link.href = url;
-                link.download = 'italian_vocab_sample.json';
-                document.body.appendChild(link);
-                link.click();
-                document.body.removeChild(link);
-                URL.revokeObjectURL(url);
-                
-                showImportStatus('Sample JSON downloaded!', 'success');
-            } catch (error) {
-                // Method 2: Fallback - show JSON in a popup to copy
-                const popup = window.open('', '_blank');
-                popup.document.write(`
-                    <html>
-                        <head><title>Sample Italian Vocabulary JSON</title></head>
-                        <body>
-                            <h2>Sample Italian Vocabulary JSON</h2>
-                            <p>Copy this content and save it as a .json file:</p>
-                            <textarea style="width:100%; height:400px; font-family:monospace;">${dataStr}</textarea>
-                            <p><strong>Instructions:</strong></p>
-                            <ol>
-                                <li>Select all text in the box above (Ctrl+A)</li>
-                                <li>Copy it (Ctrl+C)</li>
-                                <li>Create a new file called "italian_vocab.json"</li>
-                                <li>Paste the content and save</li>
-                            </ol>
-                        </body>
-                    </html>
-                `);
-                showImportStatus('Sample JSON opened in new window - copy and save as .json file', 'success');
-            }
+
+
+// Download sample JSON file with translations
+function downloadSampleJSON() {
+    const sampleWithTranslations = {
+        "beginner": {
+            "nouns": [
+                {"word": "casa", "gender": "f", "translation": "house"},
+                {"word": "amico", "gender": "m", "translation": "friend"},
+                {"word": "libro", "gender": "m", "translation": "book"}
+            ],
+            "verbs": [
+                {"word": "essere", "translation": "to be"},
+                {"word": "avere", "translation": "to have"},
+                {"word": "mangiare", "translation": "to eat"}
+            ],
+            "adjectives": [
+                {"word": "bello", "translation": "beautiful"},
+                {"word": "grande", "translation": "big"},
+                {"word": "nuovo", "translation": "new"}
+            ],
+            "adverbs": [
+                {"word": "bene", "translation": "well"},
+                {"word": "molto", "translation": "very"},
+                {"word": "sempre", "translation": "always"}
+            ]
+        },
+        "intermediate": {
+            "nouns": [
+                {"word": "università", "gender": "f", "translation": "university"},
+                {"word": "ristorante", "gender": "m", "translation": "restaurant"}
+            ],
+            "verbs": [
+                {"word": "studiare", "translation": "to study"},
+                {"word": "lavorare", "translation": "to work"}
+            ],
+            "adjectives": [
+                {"word": "interessante", "translation": "interesting"},
+                {"word": "difficile", "translation": "difficult"}
+            ],
+            "adverbs": [
+                {"word": "facilmente", "translation": "easily"},
+                {"word": "raramente", "translation": "rarely"}
+            ]
+        },
+        "advanced": {
+            "nouns": [
+                {"word": "responsabilità", "gender": "f", "translation": "responsibility"},
+                {"word": "governo", "gender": "m", "translation": "government"}
+            ],
+            "verbs": [
+                {"word": "realizzare", "translation": "to realize"},
+                {"word": "organizzare", "translation": "to organize"}
+            ],
+            "adjectives": [
+                {"word": "fondamentale", "translation": "fundamental"},
+                {"word": "tecnologico", "translation": "technological"}
+            ],
+            "adverbs": [
+                {"word": "particolarmente", "translation": "particularly"},
+                {"word": "principalmente", "translation": "mainly"}
+            ]
         }
+    };
+    
+    const jsonString = JSON.stringify(sampleWithTranslations, null, 2);
+    
+    try {
+        const blob = new Blob([jsonString], {type: 'application/json'});
+        const url = URL.createObjectURL(blob);
+        const downloadLink = document.createElement('a');
+        downloadLink.href = url;
+        downloadLink.download = 'italian_vocab_with_translations.json';
+        document.body.appendChild(downloadLink);
+        downloadLink.click();
+        document.body.removeChild(downloadLink);
+        URL.revokeObjectURL(url);
+        
+        showImportStatus('Sample JSON with translations downloaded!', 'success');
+    } catch (error) {
+        console.error('Download failed:', error);
+        showImportStatus('Download failed - check console', 'error');
+    }
+}
 
         // Tab switching
         document.querySelectorAll('.tab').forEach(tab => {
