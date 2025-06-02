@@ -811,7 +811,7 @@
             displaySelectedWords(selectedWords);
             
             // Show/hide hint buttons based on available words
-            const hasNouns = selectedWords.some(item => item.category === 'noun' && item.gender);
+            const hasNouns = selectedWords.some(item => item.category === 'sostantivo' && item.gender);
             const hasAnyWords = selectedWords.length > 0;
             
             const genderHintBtn = document.getElementById('genderHintBtn');
@@ -862,7 +862,7 @@
         // Show gender hints for nouns
         function showGenderHints() {
             const genderHints = document.getElementById('genderHints');
-            const nounsWithGender = currentSelectedWords.filter(item => item.category === 'noun' && item.gender);
+            const nounsWithGender = currentSelectedWords.filter(item => item.category === 'sostantivo' && item.gender);
             
             if (nounsWithGender.length === 0) {
                 genderHints.innerHTML = '<div class="empty-state">No nouns with gender info available</div>';
