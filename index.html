@@ -597,13 +597,38 @@
         let wordLists = allWordLists[currentLevel]; // Current active word list
         let currentSelectedWords = []; // Store current practice words for gender hints
 
-        // Save words function (placeholder for when localStorage is available)
+       
+
+
+        // Save words function - saves to localStorage
         function saveWords() {
-            // In a real environment, this would save to localStorage:
-            // localStorage.setItem('italianVocabLists', JSON.stringify(allWordLists));
-            console.log('Words saved (localStorage not available in demo)');
+            try {
+                localStorage.setItem('italianVocabLists', JSON.stringify(allWordLists));
+                console.log('Words saved successfully');
+            } catch (e) {
+                console.log('Could not save words:', e);
+            }
+        }
+        
+        // Load saved words from localStorage
+        function loadSavedWords() {
+            try {
+                const saved = localStorage.getItem('italianVocabLists');
+                if (saved) {
+                    allWordLists = JSON.parse(saved);
+                    wordLists = allWordLists[currentLevel];
+                    updateWordCounts();
+                    updateWordLists();
+                    console.log('Loaded saved words');
+                }
+            } catch (e) {
+                console.log('Could not load saved words:', e);
+            }
         }
 
+
+
+        
         // Switch difficulty level
         function switchLevel() {
             const levelSelect = document.getElementById('skillLevel');
