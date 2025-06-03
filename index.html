@@ -1035,6 +1035,7 @@ function downloadSampleJSON() {
         // Initialize the app
         updateWordCounts();
         updateWordLists();
+        loadSavedWords(); // Load any saved vocabulary from localStorage
 
         // Register service worker for PWA functionality
         if ('serviceWorker' in navigator) {
