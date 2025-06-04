@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Italian Vocab Practice</title>
     <link rel="manifest" href="data:application/json;base64,eyJuYW1lIjoiSXRhbGlhbiBWb2NhYiBQcmFjdGljZSIsInNob3J0X25hbWUiOiJJdGFsaWFuVm9jYWIiLCJzdGFydF91cmwiOiIuIiwiZGlzcGxheSI6InN0YW5kYWxvbmUiLCJiYWNrZ3JvdW5kX2NvbG9yIjoiIzJlN2QzMiIsInRoZW1lX2NvbG9yIjoiIzJlN2QzMiIsImljb25zIjpbeyJzcmMiOiJkYXRhOmltYWdlL3N2Zyt4bWw7YmFzZTY0LFBITjJaeUI0Yld4dWN6MGlhSFIwY0RvdkwzZDNkeTUzTXk1dmNtY3ZNakF3TUM5emRtY2lJSGRwWkhSb1BTSXhNakFpSUdobGFXZG9kRDBpTVRJd0lqNDhZMmx5WTJ4bElHTjRQU0kyTUNJZ1kzazlJall3SWlCeVBTSTBNQ0lnWm1sc2JEMGlJekpsTnpRek1pSXZQangwWlhoMElIZ3lQU0kyTUNJZ2VUSTlJelFpSUhOMGVXeGxQU0ptYVd4c09pTjNhR2wwWlR0bWIyNTBMWE5wZW1VNk1UTndlQ0lnZEdWNGRDMWhibU5vYjNJOUltMXBaR1JzWlNJK1NVUkJQQzkwWlhoMFBqd3ZjM1puUGc9PSIsInNpemVzIjoiMTIweDEyMCIsInR5cGUiOiJpbWFnZS9zdmcreG1sIn1dfQ==">
+    <script src="https://code.responsivevoice.org/responsivevoice.js"></script>
     <style>
         * {
             margin: 0;
@@ -4209,16 +4210,20 @@
 
 
 
-        // Function to pronounce Italian words using Google Translate
+        // Function to pronounce Italian words using ResponsiveVoice
         function pronounceWord(word) {
-            const url = `https://translate.google.com/translate_tts?ie=UTF-8&tl=it&client=tw-ob&q=${encodeURIComponent(word)}`;
-            const popup = window.open(url, 'pronunciation', 'width=1,height=1,left=0,top=0');
-            
-            // Auto-close the popup after 2 seconds
-            if (popup) {
-                setTimeout(() => {
-                    popup.close();
-                }, 2000);
+            // Check if ResponsiveVoice is loaded
+            if (typeof responsiveVoice !== 'undefined') {
+                responsiveVoice.speak(word, "Italian Female", {
+                    rate: 0.8,  // Slightly slower for language learning
+                    pitch: 1,
+                    volume: 1
+                });
+            } else {
+                console.log('ResponsiveVoice not loaded yet');
+                // Fallback to Google Translate page
+                const url = `https://translate.google.com/?sl=it&tl=en&text=${encodeURIComponent(word)}&op=translate`;
+                window.open(url, 'translate', 'width=600,height=400');
             }
         }
 
