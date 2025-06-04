@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Italian Vocab Practice</title>
     <link rel="manifest" href="data:application/json;base64,eyJuYW1lIjoiSXRhbGlhbiBWb2NhYiBQcmFjdGljZSIsInNob3J0X25hbWUiOiJJdGFsaWFuVm9jYWIiLCJzdGFydF91cmwiOiIuIiwiZGlzcGxheSI6InN0YW5kYWxvbmUiLCJiYWNrZ3JvdW5kX2NvbG9yIjoiIzJlN2QzMiIsInRoZW1lX2NvbG9yIjoiIzJlN2QzMiIsImljb25zIjpbeyJzcmMiOiJkYXRhOmltYWdlL3N2Zyt4bWw7YmFzZTY0LFBITjJaeUI0Yld4dWN6MGlhSFIwY0RvdkwzZDNkeTUzTXk1dmNtY3ZNakF3TUM5emRtY2lJSGRwWkhSb1BTSXhNakFpSUdobGFXZG9kRDBpTVRJd0lqNDhZMmx5WTJ4bElHTjRQU0kyTUNJZ1kzazlJall3SWlCeVBTSTBNQ0lnWm1sc2JEMGlJekpsTnpRek1pSXZQangwWlhoMElIZ3lQU0kyTUNJZ2VUSTlJelFpSUhOMGVXeGxQU0ptYVd4c09pTjNhR2wwWlR0bWIyNTBMWE5wZW1VNk1UTndlQ0lnZEdWNGRDMWhibU5vYjNJOUltMXBaR1JzWlNJK1NVUkJQQzkwWlhoMFBqd3ZjM1puUGc9PSIsInNpemVzIjoiMTIweDEyMCIsInR5cGUiOiJpbWFnZS9zdmcreG1sIn1dfQ==">
+    <script src="https://code.responsivevoice.org/responsivevoice.js"></script>
     <style>
         * {
             margin: 0;
@@ -277,6 +278,19 @@
             font-size: 1em;
             background: white;
             cursor: pointer;
+        }
+
+
+        .speaker-icon {
+            cursor: pointer;
+            margin: 0 5px;
+            font-size: 0.9em;
+            opacity: 0.8;
+            transition: opacity 0.2s;
+        }
+
+        .speaker-icon:hover {
+            opacity: 1;
         }
 
         .import-section {
@@ -4194,6 +4208,24 @@
                 }
         };
 
+
+
+        // Function to pronounce Italian words using ResponsiveVoice
+        function pronounceWord(word) {
+            // Check if ResponsiveVoice is loaded
+            if (typeof responsiveVoice !== 'undefined') {
+                responsiveVoice.speak(word, "Italian Male", {
+                    rate: 0.95,  // Slightly slower for language learning
+                    pitch: 1,
+                    volume: 1
+                });
+            } else {
+                console.log('ResponsiveVoice not loaded yet');
+                alert('Pronunciation feature is still loading. Please try again in a moment.');
+            }
+        }
+
+
         // Current skill level and word lists
         let currentLevel = 'beginner';
         let allWordLists = {...defaultWordLists};
@@ -4482,7 +4514,11 @@ function downloadSampleJSON() {
             }
 
             container.innerHTML = words.map(item => 
-                `<div class="word-tag">${item.word}<span class="category-label">(${item.category})</span></div>`
+                `<div class="word-tag">
+                    ${item.word}
+                    <span class="speaker-icon" onclick="pronounceWord('${item.word}')" title="Click to hear pronunciation">🔊</span>
+                    <span class="category-label">(${item.category})</span>
+                </div>`
             ).join('');
         }
 
