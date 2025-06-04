@@ -279,6 +279,19 @@
             cursor: pointer;
         }
 
+
+        .speaker-icon {
+            cursor: pointer;
+            margin: 0 5px;
+            font-size: 0.9em;
+            opacity: 0.8;
+            transition: opacity 0.2s;
+        }
+
+        .speaker-icon:hover {
+            opacity: 1;
+        }
+
         .import-section {
             background: #f8f9fa;
             border-radius: 10px;
@@ -4194,6 +4207,22 @@
                 }
         };
 
+
+
+        // Function to pronounce Italian words using Google Translate
+        function pronounceWord(word) {
+            const url = `https://translate.google.com/translate_tts?ie=UTF-8&tl=it&client=tw-ob&q=${encodeURIComponent(word)}`;
+            const popup = window.open(url, 'pronunciation', 'width=1,height=1,left=0,top=0');
+            
+            // Auto-close the popup after 2 seconds
+            if (popup) {
+                setTimeout(() => {
+                    popup.close();
+                }, 2000);
+            }
+        }
+
+
         // Current skill level and word lists
         let currentLevel = 'beginner';
         let allWordLists = {...defaultWordLists};
@@ -4482,7 +4511,11 @@ function downloadSampleJSON() {
             }
 
             container.innerHTML = words.map(item => 
-                `<div class="word-tag">${item.word}<span class="category-label">(${item.category})</span></div>`
+                `<div class="word-tag">
+                    ${item.word}
+                    <span class="speaker-icon" onclick="pronounceWord('${item.word}')" title="Click to hear pronunciation">🔊</span>
+                    <span class="category-label">(${item.category})</span>
+                </div>`
             ).join('');
         }
 
