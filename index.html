@@ -4214,16 +4214,14 @@
         function pronounceWord(word) {
             // Check if ResponsiveVoice is loaded
             if (typeof responsiveVoice !== 'undefined') {
-                responsiveVoice.speak(word, "Italian Female", {
-                    rate: 0.8,  // Slightly slower for language learning
+                responsiveVoice.speak(word, "Italian Male", {
+                    rate: 0.95,  // Slightly slower for language learning
                     pitch: 1,
                     volume: 1
                 });
             } else {
                 console.log('ResponsiveVoice not loaded yet');
-                // Fallback to Google Translate page
-                const url = `https://translate.google.com/?sl=it&tl=en&text=${encodeURIComponent(word)}&op=translate`;
-                window.open(url, 'translate', 'width=600,height=400');
+                alert('Pronunciation feature is still loading. Please try again in a moment.');
             }
         }
 
