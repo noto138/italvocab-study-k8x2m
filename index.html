@@ -12394,6 +12394,14 @@
       // User word preferences for weighting
       let userWordPreferences = {};
 
+      // Translation map for word categories
+      const categoryDisplayLabels = {
+        noun: "sostantivo",
+        verb: "verbo",
+        adjective: "aggettivo",
+        adverb: "avverbio",
+      };
+
       // Set word weight with confirmation for retirement
       function setWordWeight(word, weight) {
         if (weight === 0.0 || weight === 0) {
@@ -12820,7 +12828,9 @@
                         <span class="weight-icon" onclick="toggleWeightControls('${
                           item.word
                         }')" title="Adjust word frequency">⚖️</span>
-                        <span class="category-label">(${item.category})</span>
+                        <span class="category-label">(${
+                          categoryDisplayLabels[item.category] || item.category
+                        })</span>
                     </div>
                     ${
                       item.translation
@@ -13108,7 +13118,10 @@
         // Category and level info
         detailsHtml += `<div style="font-size: 0.9em; color: #6c757d;">`;
         detailsHtml += `<strong>Category:</strong> ${
-          category.charAt(0).toUpperCase() + category.slice(1)
+          categoryDisplayLabels[category]
+            ? categoryDisplayLabels[category].charAt(0).toUpperCase() +
+              categoryDisplayLabels[category].slice(1)
+            : category.charAt(0).toUpperCase() + category.slice(1)
         }<br>`;
         detailsHtml += `<strong>Levels:</strong> ${levels.join(", ")}`;
         detailsHtml += `</div></div>`;
